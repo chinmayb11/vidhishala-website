@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#080C14"/>
+      <stop offset="100%" stop-color="#1a1f2e"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="url(#bg)"/>
+  <circle cx="256" cy="256" r="140" fill="none" stroke="url(#gold)" stroke-width="3" opacity="0.3"/>
+  <g transform="translate(256, 256)">
+    <g transform="translate(0, -20)">
+      <rect x="-3" y="-100" width="6" height="50" fill="url(#gold)" rx="3"/>
+      <circle cx="0" cy="-110" r="12" fill="url(#gold)"/>
+      <path d="M -80 10 L 80 10 L 80 20 L -80 20 Z" fill="url(#gold)" rx="4"/>
+      <path d="M -3 -50 L 3 -50 L 3 10 L -3 10 Z" fill="url(#gold)"/>
+      <path d="M -80 10 Q -80 -50 -40 -50 L -3 -50 L -3 10 Z" fill="url(#gold)" opacity="0.9"/>
+      <path d="M 80 10 Q 80 -50 40 -50 L 3 -50 L 3 10 Z" fill="url(#gold)" opacity="0.9"/>
+      <path d="M -80 10 L 80 10 L 70 30 L -70 30 Z" fill="url(#gold)"/>
+      <rect x="-90" y="30" width="180" height="8" fill="url(#gold)" rx="4"/>
+    </g>
+  </g>
+  <text x="256" y="430" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#F59E0B" text-anchor="middle" letter-spacing="2">VIDHISHALA</text>
+</svg>

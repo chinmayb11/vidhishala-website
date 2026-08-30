@@ -1,0 +1,26 @@
+{
+  "name": "Vidhishala Foundation",
+  "short_name": "Vidhishala",
+  "description": "Empowering Legal Minds. Driving Societal Transformation. A registered socio-legal organization under The Rajasthan Societies Registration Act, 1958.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080C14",
+  "theme_color": "#080C14",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "legal", "productivity"]
+}
