@@ -1,9 +1,8 @@
-const CACHE_NAME = 'vidhishala-v1';
+const CACHE_NAME = 'vidhishala-v3';
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',
-  '/icon-192.png',
-  '/icon-512.png',
+  '/vidhishala%20circle%20logo.png',
 ];
 
 self.addEventListener('install', (event) => {
@@ -28,6 +27,9 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(request.url);
   if (url.origin !== location.origin) return;
+
+  // Never serve application bundles or API responses from an old PWA cache.
+  if (url.pathname.startsWith('/_next/') || url.pathname.startsWith('/api/')) return;
 
   if (request.mode === 'navigate') {
     event.respondWith(

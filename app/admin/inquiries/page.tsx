@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/lib/supabase-client';
+import { adminApi } from '@/lib/admin-api';
 
 interface Inquiry {
   id: string;
@@ -34,7 +34,7 @@ export default function AdminInquiriesPage() {
   const [statusFilter, setStatusFilter] = React.useState('all');
 
   const fetchInquiries = async () => {
-    let query = supabase.from('inquiries').select('*').order('created_at', { ascending: false });
+    let query = adminApi.from('inquiries').select('*').order('created_at', { ascending: false });
     if (statusFilter !== 'all') query = query.eq('status', statusFilter);
     const { data, error } = await query;
     if (!error && data) setInquiries(data as Inquiry[]);
@@ -44,7 +44,7 @@ export default function AdminInquiriesPage() {
   React.useEffect(() => { fetchInquiries(); }, [statusFilter]);
 
   const updateStatus = async (id: string, status: string) => {
-    const { error } = await supabase.from('inquiries').update({ status }).eq('id', id);
+    const { error } = await adminApi.from('inquiries').update({ status }).eq('id', id);
     if (error) { toast({ title: 'Update Failed', description: error.message, variant: 'destructive' }); return; }
     toast({ title: 'Status Updated', description: `Inquiry marked as ${status}.` });
     fetchInquiries();
@@ -52,7 +52,7 @@ export default function AdminInquiriesPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this inquiry?')) return;
-    const { error } = await supabase.from('inquiries').delete().eq('id', id);
+    const { error } = await adminApi.from('inquiries').delete().eq('id', id);
     if (error) { toast({ title: 'Delete Failed', description: error.message, variant: 'destructive' }); return; }
     toast({ title: 'Inquiry Deleted' });
     fetchInquiries();

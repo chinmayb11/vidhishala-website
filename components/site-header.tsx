@@ -1,43 +1,22 @@
 'use client';
 
 import * as React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
-  Scale,
   ChevronDown,
   Menu,
-  Library,
-  GraduationCap,
-  School,
-  FileText,
-  BookOpen,
-  ScrollText,
-  Calendar,
-  Users,
-  Images,
-  Award,
-  Info,
-  Shield,
-  Gavel,
+  X,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-  SheetHeader,
-  SheetTitle,
-} from '@/components/ui/sheet';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { PWAInstallButton } from '@/components/pwa-install-button';
 
 interface NavChild {
   label: string;
   href: string;
-  description: string;
-  icon: React.ElementType;
+  children?: NavChild[];
 }
 
 interface NavItem {
@@ -49,41 +28,119 @@ interface NavItem {
 const navItems: NavItem[] = [
   { label: 'Home', href: '/' },
   {
-    label: 'Programs',
-    href: '/programs',
+    label: 'About Us', href: '/about',
     children: [
-      { label: 'Library Internship Program (LIP)', href: '/programs/library-internship', description: 'Practical legal research & cataloging', icon: Library },
-      { label: 'Hybrid Mode Internship', href: '/programs/hybrid-internship', description: 'In collaboration with Lloyd University', icon: GraduationCap },
-      { label: "Children's Today, Leaders Tomorrow", href: '/programs/school-outreach', description: 'School outreach & gender sensitivity', icon: School },
+      { label: 'About the Organisation', href: '/about/organisation' },
+      { label: 'Aim & Objective', href: '/about/aim-objective' },
+      { label: 'Our Team', href: '/team' },
+      { label: 'Advisory Board', href: '/about/advisory-board' },
     ],
   },
   {
-    label: 'Resources',
-    href: '/resources',
+    label: 'Activities & Gallery', href: '/programs',
     children: [
-      { label: 'The Vidhi Gazette', href: '/vidhi-gazette', description: 'Digital publication hub', icon: FileText },
-      { label: 'Bare Acts & References', href: '/resources/bare-acts', description: 'Downloadable legal guides', icon: BookOpen },
-      { label: 'Style Guides & Research', href: '/resources/style-guides', description: 'Research guidelines', icon: ScrollText },
-      { label: 'Fundamental Rights', href: '/resources/fundamental-rights', description: 'Constitutional rights guides', icon: Shield },
-      { label: 'Legal Duties', href: '/resources/legal-duties', description: 'Citizen obligations', icon: Gavel },
+      {
+        label: 'Internship Programmes', href: '/programs/internships', children: [
+          { label: 'NITP', href: '/programs/internships/nitp' },
+          { label: 'Regular Internship', href: '/programs/internships/regular' },
+          { label: 'LIP', href: '/programs/internships/lip' },
+        ],
+      },
+      { label: 'Pandit A.L. Sharma Debate Competition', href: '/programs/debate' },
+      { label: 'Educational Visits', href: '/programs/educational-visits' },
+      { label: 'Workshops, Seminars & Conferences', href: '/programs/workshops' },
+      { label: 'Social Welfare Activities', href: '/programs/social-welfare' },
+      {
+        label: 'Gallery', href: '/gallery', children: [
+          { label: 'Events', href: '/gallery/events' },
+          { label: 'Internships', href: '/gallery/internships' },
+          { label: 'Workshops', href: '/gallery/workshops' },
+          { label: 'Educational Visits', href: '/gallery/educational-visits' },
+          { label: 'Social Welfare Activities', href: '/gallery/social-welfare' },
+        ],
+      },
     ],
   },
   {
-    label: 'About',
-    href: '/about',
+    label: 'Publications & Research', href: '/resources',
     children: [
-      { label: 'About Us', href: '/about', description: 'Our story & registration', icon: Info },
-      { label: 'Team & Leadership', href: '/team', description: 'Advisory board & members', icon: Users },
-      { label: 'Media Gallery', href: '/gallery', description: 'Photos & videos', icon: Images },
+      { label: 'The Vidhi Gazette', href: '/vidhi-gazette' },
+      { label: 'Rajasthan Law Journal', href: '/resources/journal' },
+      { label: 'Blogs, Articles & Research Papers', href: '/resources/blogs' },
+      { label: 'Press Releases', href: '/resources/press-releases' },
+      { label: 'Research & Development (R & D)', href: '/resources/rnd' },
     ],
   },
-  { label: 'Law Festival', href: '/rajasthan-law-festival' },
-  { label: 'Contact', href: '/contact' },
+  {
+    label: 'Rajasthan Law Fest', href: '/rajasthan-law-festival',
+    children: [
+      { label: 'About the Law Fest', href: '/rajasthan-law-festival/about' },
+      { label: 'Past Editions', href: '/rajasthan-law-festival/past-editions' },
+      { label: 'Events & Competitions', href: '/rajasthan-law-festival/events' },
+      { label: 'Panel Discussions', href: '/rajasthan-law-festival/panel-discussions' },
+      { label: 'Eminent Speakers', href: '/rajasthan-law-festival/speakers' },
+      { label: 'Gallery', href: '/rajasthan-law-festival/gallery' },
+      { label: 'Downloads', href: '/rajasthan-law-festival/downloads' },
+      { label: 'Contact (Law Fest)', href: '/rajasthan-law-festival/contact' },
+    ],
+  },
+  {
+    label: 'Contact Us', href: '/contact',
+    children: [
+      { label: 'Contact Information', href: '/contact/information' },
+      { label: 'Enquiry Form', href: '/contact/enquiry' },
+      { label: 'Our Address', href: '/contact/address' },
+      { label: 'Get in Touch', href: '/contact/touch' },
+    ],
+  },
 ];
+
+function DropdownLinks({ items, nested = false }: { items: NavChild[]; nested?: boolean }) {
+  return (
+    <div className={cn(nested ? 'ml-3 border-l border-[#B08D57]/40 pl-3' : 'space-y-0.5')}>
+      {items.map((child) => (
+        <div key={child.label} className="group/item relative">
+          <Link
+            href={child.href}
+            className="flex items-center justify-between gap-3 rounded-lg border border-transparent px-3 py-2.5 text-sm text-slate-700 transition-all hover:border-[#B08D57]/25 hover:bg-[#F8F5F3] hover:text-[#7A0C0C] dark:text-[#F8F5F3] dark:hover:border-[#B08D57]/30 dark:hover:bg-[#1C1C1C] dark:hover:text-[#B08D57]"
+          >
+            <span className="truncate">{child.label}</span>
+            {child.children && <ChevronDown className="h-3.5 w-3.5 -rotate-90 text-[#B08D57]" />}
+          </Link>
+          {child.children && (
+            <div className="hidden pt-1 group-hover/item:block group-focus-within/item:block">
+              <DropdownLinks items={child.children} nested />
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function MobileLinks({ items }: { items: NavChild[] }) {
+  return (
+    <div className="flex flex-col gap-2">
+      {items.map((child) => (
+        <div key={child.label}>
+          <Link href={child.href} className="flex items-center gap-3 py-1 text-sm text-slate-700 hover:text-[#7A0C0C] dark:text-white dark:hover:text-[#B08D57]">
+            <span>{child.label}</span>
+          </Link>
+          {child.children && (
+            <div className="ml-4 border-l border-[#B08D57]/30 pl-3">
+              <MobileLinks items={child.children} />
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
 
 function HoverDropdown({ item, isActive }: { item: NavItem; isActive: (href: string) => boolean }) {
   const [open, setOpen] = React.useState(false);
   const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const menuRef = React.useRef<HTMLDivElement | null>(null);
 
   const handleEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -94,47 +151,50 @@ function HoverDropdown({ item, isActive }: { item: NavItem; isActive: (href: str
     timeoutRef.current = setTimeout(() => setOpen(false), 150);
   };
 
+  React.useEffect(() => {
+    const handlePointerDown = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handlePointerDown);
+    return () => document.removeEventListener('mousedown', handlePointerDown);
+  }, []);
+
   React.useEffect(() => () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
   }, []);
 
   return (
-    <div className="relative" onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
+    <div ref={menuRef} className="relative" onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
       <Link
         href={item.href}
+        onClick={(event) => {
+          if (item.children) {
+            event.preventDefault();
+            setOpen((current) => !current);
+          }
+        }}
         className={cn(
-          'flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-md transition-colors hover:text-primary',
-          isActive(item.href) && 'text-primary'
+          'flex min-h-12 items-center justify-center gap-1 border-b-2 border-transparent px-3 py-3 text-center text-xs font-semibold tracking-wide text-[#1C1C1C] transition-colors hover:border-[#B08D57] hover:bg-[#F8F5F3] hover:text-[#7A0C0C] dark:text-white dark:hover:bg-[#4A0808] dark:hover:text-white xl:text-sm',
+          isActive(item.href) && 'border-[#7A0C0C] font-bold text-[#7A0C0C] dark:border-[#B08D57] dark:text-[#B08D57]'
         )}
       >
         {item.label}
-        <ChevronDown className={cn('h-3 w-3 opacity-60 transition-transform duration-200', open && 'rotate-180')} />
+        <ChevronDown className={cn('h-4 w-4 opacity-70 transition-transform duration-200', open && 'rotate-180')} />
       </Link>
       {open && (
-        <div className="absolute left-0 top-full pt-2 z-50">
+        <div className="absolute left-1/2 top-full z-[60] w-[min(22rem,calc(100vw-1.5rem))] -translate-x-1/2 pt-2">
           <div
-            className="glass-card rounded-xl p-2 w-80 shadow-xl border border-border/50 animate-dropdown-in"
+            className="max-h-[70vh] w-full overflow-y-auto overflow-x-hidden rounded-xl border border-[#D9D0C7] border-t-2 border-t-[#B08D57] bg-white/95 p-2 text-slate-800 shadow-[0_18px_45px_rgba(74,8,8,0.18)] backdrop-blur-md dark:border-[#B08D57]/30 dark:border-t-[#B08D57] dark:bg-[#4A0808]/95 dark:text-[#F8F5F3]"
             onMouseEnter={handleEnter}
           >
-            <div className="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-primary">
+            <div className="px-3 py-2 text-[10px] font-bold uppercase tracking-[0.16em] text-[#B08D57]">
               {item.label}
             </div>
-            <div className="h-px bg-border/40 my-1" />
-            {item.children!.map((child) => (
-              <Link
-                key={child.label}
-                href={child.href}
-                className="flex items-start gap-3 p-3 rounded-lg hover:bg-primary/10 transition-colors group"
-              >
-                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary/10 text-primary shrink-0 group-hover:bg-primary group-hover:text-primary-foreground transition-all">
-                  <child.icon className="h-4 w-4" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-sm font-medium">{child.label}</span>
-                  <span className="text-xs text-muted-foreground">{child.description}</span>
-                </div>
-              </Link>
-            ))}
+            <div className="my-1 h-px bg-gradient-to-r from-transparent via-[#B08D57]/45 to-transparent" />
+            <DropdownLinks items={item.children ?? []} />
           </div>
         </div>
       )}
@@ -142,10 +202,26 @@ function HoverDropdown({ item, isActive }: { item: NavItem; isActive: (href: str
   );
 }
 
+function DesktopNavLink({ item, isActive }: { item: NavItem; isActive: (href: string) => boolean }) {
+  return (
+    <Link
+      href={item.href}
+      className={cn(
+        'flex min-h-12 items-center justify-center border-b-2 border-transparent px-3 py-3 text-center text-xs font-semibold tracking-wide text-[#1C1C1C] transition-colors hover:border-[#B08D57] hover:bg-[#F8F5F3] hover:text-[#7A0C0C] dark:text-white dark:hover:bg-[#4A0808] dark:hover:text-white xl:text-sm',
+        isActive(item.href) && 'border-[#7A0C0C] font-bold text-[#7A0C0C] dark:border-[#B08D57] dark:text-[#B08D57]'
+      )}
+    >
+      {item.label}
+    </Link>
+  );
+}
+
 export function SiteHeader() {
   const pathname = usePathname();
+  const isHome = pathname === '/';
   const [scrolled, setScrolled] = React.useState(false);
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const [expandedMobileItem, setExpandedMobileItem] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -153,50 +229,100 @@ export function SiteHeader() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Close mobile drawer when changing routes
+  React.useEffect(() => {
+    setMobileMenuOpen(false);
+    setExpandedMobileItem(null);
+  }, [pathname]);
+
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/';
     return pathname.startsWith(href.split('#')[0]);
   };
 
+  const toggleMobileSubmenu = (label: string) => {
+    setExpandedMobileItem(expandedMobileItem === label ? null : label);
+  };
+
   return (
     <header
       className={cn(
-        'sticky top-0 z-50 w-full transition-all duration-300',
-        scrolled ? 'glass-nav shadow-sm' : 'bg-transparent'
+        'site-header top-0 z-50 w-full overflow-visible border-b border-[#D9D0C7] bg-white/95 shadow-sm transition-[background-color,backdrop-filter,box-shadow] duration-300 dark:border-[#B08D57]/40 dark:bg-[#1C1C1C]/95',
+        isHome ? 'home-header absolute bg-white/10 backdrop-blur-2xl dark:bg-[#1C1C1C]/20' : 'sticky',
+        scrolled && (isHome ? 'bg-white/30 shadow-lg dark:!bg-[#1C1C1C]/60' : 'bg-white/75 shadow-lg backdrop-blur-md dark:!bg-[#1C1C1C]/80')
       )}
     >
-      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between gap-4">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group shrink-0">
-            <div className="relative">
-              <div className="absolute inset-0 bg-gold/30 rounded-full blur-md group-hover:bg-gold/50 transition-all" />
-              <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-gold to-amber-600 text-navy shadow-lg">
-                <Scale className="h-5 w-5" strokeWidth={2.5} />
-              </div>
-            </div>
-            <div className="hidden sm:block">
-              <div className="font-heading font-bold text-sm leading-tight tracking-wide">
-                VIDHISHALA
-              </div>
-              <div className="text-[10px] text-muted-foreground leading-tight tracking-wider uppercase">
-                Foundation
-              </div>
-            </div>
-          </Link>
+      <div className="absolute right-4 top-3 z-20 flex items-center gap-1 sm:gap-2">
+        <ThemeToggle />
+        <PWAInstallButton />
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="rounded-md p-2 text-[#1C1C1C] transition-colors hover:bg-[#F8F5F3] dark:text-white dark:hover:bg-[#4A0808] xl:hidden"
+          aria-label="Toggle Navigation Menu"
+          aria-expanded={mobileMenuOpen}
+        >
+          {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        </button>
+      </div>
 
-          {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-1">
+      <div className={cn(
+        'container relative mx-auto flex min-h-[174px] items-center justify-center px-4 py-6 text-center sm:px-6 sm:py-7 lg:min-h-[190px] lg:px-8 lg:py-8'
+      )}>
+        <Link href="/" className="group inline-flex flex-col items-center">
+          <span className="mb-3 flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-white p-1 shadow-[0_8px_24px_rgba(74,8,8,0.16)] ring-1 ring-[#B08D57]/60 transition-transform duration-300 group-hover:scale-[1.03] sm:h-28 sm:w-28 sm:p-1.5 lg:h-32 lg:w-32 lg:p-2">
+            <Image src="/vidhishala%20circle%20logo.png" alt="Vidhishala logo" width={128} height={128} className="h-full w-full rounded-full object-contain" />
+          </span>
+          <span className="font-heading text-3xl font-extrabold tracking-tight text-[#7A0C0C] dark:text-[#B08D57] sm:text-4xl">VIDHISHALA</span>
+          <span className="mt-0.5 text-[10px] font-medium uppercase tracking-[0.2em] text-[#B08D57]">Learn | Engage | Empower</span>
+        </Link>
+      </div>
+
+      <nav aria-label="Primary navigation" className={cn(
+        'hidden overflow-visible border-t border-[#D9D0C7] bg-white dark:border-[#B08D57]/40 dark:bg-[#4A0808] xl:block',
+        isHome && 'border-white/30 bg-white/10 backdrop-blur-2xl dark:bg-[#1C1C1C]/20'
+      )}>
+        <div className="container mx-auto flex min-w-0 max-w-full items-stretch justify-center gap-0 overflow-visible px-1 lg:gap-1 lg:px-6">
+          {navItems.map((item) => item.children
+            ? <HoverDropdown key={item.label} item={item} isActive={isActive} />
+            : <DesktopNavLink key={item.label} item={item} isActive={isActive} />
+          )}
+        </div>
+      </nav>
+
+      {mobileMenuOpen && (
+        <div className={cn(
+          'border-t border-[#B08D57]/50 bg-white px-4 py-6 shadow-2xl dark:bg-[#1C1C1C] xl:hidden',
+          isHome && 'bg-white/90 backdrop-blur-xl dark:bg-[#1C1C1C]/90'
+        )}>
+          <nav className="flex flex-col gap-2">
             {navItems.map((item) =>
               item.children ? (
-                <HoverDropdown key={item.label} item={item} isActive={isActive} />
+                <div key={item.label} className="border-b border-[#B08D57]/20 pb-2">
+                  <button
+                    onClick={() => toggleMobileSubmenu(item.label)}
+                    className="flex w-full items-center justify-between py-2 text-left text-base font-bold text-[#7A0C0C] transition-colors hover:text-[#4A0808] dark:text-[#B08D57]"
+                  >
+                    <span>{item.label}</span>
+                    <ChevronDown
+                      className={cn(
+                        'h-5 w-5 opacity-70 transition-transform duration-200',
+                        expandedMobileItem === item.label && 'rotate-180'
+                      )}
+                    />
+                  </button>
+                  {expandedMobileItem === item.label && (
+                    <div className="mt-1 rounded-xl border border-[#D9D0C7] bg-[#F8F5F3] p-2 pl-4 shadow-inner dark:border-[#B08D57]/30 dark:bg-[#4A0808]">
+                      <MobileLinks items={item.children} />
+                    </div>
+                  )}
+                </div>
               ) : (
                 <Link
                   key={item.label}
                   href={item.href}
                   className={cn(
-                    'px-3 py-2 text-sm font-medium rounded-md transition-colors hover:text-primary',
-                    isActive(item.href) && 'text-primary'
+                    'border-b border-[#B08D57]/20 py-2 text-base font-bold transition-colors',
+                    isActive(item.href) ? 'text-[#7A0C0C] dark:text-[#B08D57]' : 'text-slate-800 dark:text-white'
                   )}
                 >
                   {item.label}
@@ -204,96 +330,8 @@ export function SiteHeader() {
               )
             )}
           </nav>
-
-          {/* Right Actions */}
-          <div className="flex items-center gap-2">
-            <ThemeToggle />
-            <PWAInstallButton />
-            <Button
-              asChild
-              size="sm"
-              className="hidden md:inline-flex bg-gradient-to-r from-gold to-amber-600 text-navy font-semibold hover:shadow-lg hover:shadow-gold/30 transition-all"
-            >
-              <Link href="/contact?purpose=internship">
-                <Award className="h-4 w-4 mr-1" />
-                Apply
-              </Link>
-            </Button>
-
-            {/* Mobile menu */}
-            <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-              <SheetTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="lg:hidden h-9 w-9"
-                >
-                  <Menu className="h-5 w-5" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-80 glass-nav overflow-y-auto">
-                <SheetHeader>
-                  <SheetTitle className="font-heading">
-                    <div className="flex items-center gap-2">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-gold to-amber-600 text-navy">
-                        <Scale className="h-4 w-4" strokeWidth={2.5} />
-                      </div>
-                      Vidhishala Foundation
-                    </div>
-                  </SheetTitle>
-                </SheetHeader>
-                <nav className="flex flex-col gap-1 mt-6">
-                  {navItems.map((item) =>
-                    item.children ? (
-                      <div key={item.label} className="flex flex-col">
-                        <Link
-                          href={item.href}
-                          className="px-3 py-2 text-sm font-semibold text-foreground"
-                          onClick={() => setMobileOpen(false)}
-                        >
-                          {item.label}
-                        </Link>
-                        {item.children.map((child) => (
-                          <Link
-                            key={child.label}
-                            href={child.href}
-                            className="flex items-center gap-2 pl-6 pr-3 py-1.5 text-sm text-muted-foreground hover:text-primary"
-                            onClick={() => setMobileOpen(false)}
-                          >
-                            <child.icon className="h-3 w-3" />
-                            {child.label}
-                          </Link>
-                        ))}
-                      </div>
-                    ) : (
-                      <Link
-                        key={item.label}
-                        href={item.href}
-                        className={cn(
-                          'px-3 py-2 text-sm font-medium rounded-md transition-colors hover:text-primary',
-                          isActive(item.href) && 'text-primary'
-                        )}
-                        onClick={() => setMobileOpen(false)}
-                      >
-                        {item.label}
-                      </Link>
-                    )
-                  )}
-                  <Button
-                    asChild
-                    className="mt-4 bg-gradient-to-r from-gold to-amber-600 text-navy font-semibold"
-                  >
-                    <Link href="/contact?purpose=internship" onClick={() => setMobileOpen(false)}>
-                      <Award className="h-4 w-4 mr-1" />
-                      Apply for Internship
-                    </Link>
-                  </Button>
-                </nav>
-              </SheetContent>
-            </Sheet>
-          </div>
         </div>
-      </div>
+      )}
     </header>
   );
 }

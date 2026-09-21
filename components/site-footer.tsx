@@ -53,7 +53,7 @@ export function SiteFooter() {
     if (!email) return;
     toast({
       title: 'Subscribed Successfully',
-      description: 'You will receive updates from Vidhishala Foundation.',
+      description: 'You will receive updates from Vidhishala.',
     });
     setEmail('');
   };
@@ -71,7 +71,7 @@ export function SiteFooter() {
               </div>
               <div>
                 <div className="font-heading font-bold text-base leading-tight tracking-wide">
-                  VIDHISHALA FOUNDATION
+                  VIDHISHALA
                 </div>
                 <div className="text-[10px] text-muted-foreground leading-tight tracking-wider uppercase">
                   Empowering Legal Minds Since 2020
@@ -94,11 +94,11 @@ export function SiteFooter() {
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-primary shrink-0" />
-                <span>contact@vidhishala.org</span>
+                <span>vidhishala.law@gmail.com</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-primary shrink-0" />
-                <span>+91 141 220 1520</span>
+                <span>+91 9799998882, +91 9079847809</span>
               </div>
             </div>
           </div>
@@ -137,15 +137,15 @@ export function SiteFooter() {
                 opportunities.
               </p>
             </div>
-            <form onSubmit={handleSubscribe} className="flex gap-2 w-full md:w-auto">
+            <form onSubmit={handleSubscribe} className="flex w-full flex-col gap-2 sm:flex-row md:w-auto">
               <Input
                 type="email"
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="md:w-64"
+                className="w-full sm:w-64"
               />
-              <Button type="submit" size="icon" className="bg-gradient-to-r from-gold to-amber-600 text-navy">
+              <Button type="submit" size="icon" className="self-end bg-gradient-to-r from-gold to-amber-600 text-navy sm:self-auto">
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </form>
@@ -155,7 +155,7 @@ export function SiteFooter() {
         {/* Bottom bar */}
         <div className="mt-8 pt-8 border-t border-border/40 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-muted-foreground text-center md:text-left">
-            &copy; 2026 Vidhishala Foundation. All rights reserved.
+            &copy; 2026 Vidhishala. All rights reserved.
             Registered under The Rajasthan Societies Registration Act, 1958.
           </p>
           <div className="flex items-center gap-4 text-xs text-muted-foreground">

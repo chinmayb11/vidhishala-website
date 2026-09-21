@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/lib/supabase-client';
+import { adminApi } from '@/lib/admin-api';
 
 interface Application {
   id: string;
@@ -35,7 +35,12 @@ export default function AdminApplicationsPage() {
   const [programFilter, setProgramFilter] = React.useState('all');
 
   const fetchApplications = async () => {
-    let query = supabase.from('internship_applications').select('*').order('created_at', { ascending: false });
+    if (!adminApi) {
+      setLoading(false);
+      return;
+    }
+
+    let query = adminApi.from('internship_applications').select('*').order('created_at', { ascending: false });
     if (statusFilter !== 'all') query = query.eq('status', statusFilter);
     if (programFilter !== 'all') query = query.eq('program_type', programFilter);
     const { data, error } = await query;
@@ -48,7 +53,7 @@ export default function AdminApplicationsPage() {
   }, [statusFilter, programFilter]);
 
   const updateStatus = async (id: string, status: string) => {
-    const { error } = await supabase.from('internship_applications').update({ status }).eq('id', id);
+    const { error } = await adminApi.from('internship_applications').update({ status }).eq('id', id);
     if (error) {
       toast({ title: 'Update Failed', description: error.message, variant: 'destructive' });
       return;
@@ -59,7 +64,7 @@ export default function AdminApplicationsPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this application?')) return;
-    const { error } = await supabase.from('internship_applications').delete().eq('id', id);
+    const { error } = await adminApi.from('internship_applications').delete().eq('id', id);
     if (error) {
       toast({ title: 'Delete Failed', description: error.message, variant: 'destructive' });
       return;

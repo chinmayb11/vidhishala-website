@@ -56,7 +56,7 @@ const festivalModules = [
     icon: Trophy,
     title: 'Awards & Recognition',
     description:
-      'Outstanding participants receive awards, certificates, and recognition from the Vidhishala Foundation and partner organizations.',
+      'Outstanding participants receive awards, certificates, and recognition from the Vidhishala and partner organizations.',
     features: ['Best Advocate', 'Best Researcher', 'Best Memorial', 'Overall Championship'],
   },
 ];

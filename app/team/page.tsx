@@ -1,70 +1,65 @@
-'use client';
-
+import Image from 'next/image';
 import {
   Gavel,
   GraduationCap,
   Users,
-  BookOpen,
   Mail,
   Linkedin,
-  Scale,
   Award,
+  type LucideIcon,
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { getAdminRows } from '@/lib/page-content-store';
 
-const categories = [
+type TeamMember = {
+  name: string;
+  role: string;
+  image?: string;
+  expertise?: string;
+};
+
+type TeamCategory = {
+  id: string;
+  label: string;
+  icon: LucideIcon;
+  description: string;
+  members: TeamMember[];
+};
+
+const categories: TeamCategory[] = [
   {
-    id: 'advisory',
-    label: 'Advisory Board',
-    icon: Gavel,
-    description: 'Distinguished judges and senior academicians guiding our mission.',
-    members: [
-      { name: 'Hon\'ble Justice (Retd.) R.K. Sharma', role: 'Former Judge, Rajasthan High Court', expertise: 'Constitutional Law' },
-      { name: 'Hon\'ble Justice (Retd.) Sunita Agarwal', role: 'Former Judge, Rajasthan High Court', expertise: 'Family Law' },
-      { name: 'Prof. (Dr.) Mahesh Bhalla', role: 'Dean, NLU Jodhpur', expertise: 'Jurisprudence' },
-      { name: 'Prof. (Dr.) Rekha Sharma', role: 'Head of Law, University of Rajasthan', expertise: 'Commercial Law' },
-    ],
-  },
-  {
-    id: 'governing',
-    label: 'Governing Body',
-    icon: Scale,
-    description: 'The leadership council responsible for strategic direction.',
-    members: [
-      { name: 'Adv. Vikram Ranka', role: 'President & Founder', expertise: 'Corporate Litigation' },
-      { name: 'Adv. Priya Sharma', role: 'Vice President', expertise: 'Criminal Defense' },
-      { name: 'CA. Anand Agarwal', role: 'Treasurer', expertise: 'Tax & Finance Law' },
-      { name: 'Dr. Neha Joshi', role: 'Secretary', expertise: 'Academic Research' },
-    ],
-  },
-  {
-    id: 'executive',
-    label: 'Executive Leads',
+    id: 'leadership',
+    label: 'Leadership Team',
     icon: Users,
-    description: 'Day-to-day operations and program management.',
+    description: 'The founding leadership guiding Vidhishala\'s mission and growth.',
     members: [
-      { name: 'Rahul Mehta', role: 'Program Director, LIP', expertise: 'Legal Research' },
-      { name: 'Sneha Pareek', role: 'Festival Coordinator, RLF', expertise: 'Event Management' },
-      { name: 'Karan Singh', role: 'Editor-in-Chief, Vidhi Gazette', expertise: 'Legal Writing' },
-      { name: 'Anjali Nair', role: 'Outreach Head', expertise: 'Community Engagement' },
-    ],
-  },
-  {
-    id: 'editors',
-    label: 'Student Editorial Team',
-    icon: BookOpen,
-    description: 'Emerging legal scholars driving our publications.',
-    members: [
-      { name: 'Aditya Verma', role: 'Senior Editor', expertise: 'Constitutional Law' },
-      { name: 'Tanya Kapoor', role: 'Associate Editor', expertise: 'Environmental Law' },
-      { name: 'Rohit Jain', role: 'Research Editor', expertise: 'Criminal Law' },
-      { name: 'Ishita Gupta', role: 'Copy Editor', expertise: 'Citation & Formatting' },
+      { name: 'Adv. Kunal Sharma', role: 'Founder & National President, Vidhishala', image: '/advocate kunal sharma picture.jpeg' },
+      { name: 'Soumya Sharma', role: 'National Secretary, Vidhishala', image: '/soumya sharma.jpeg' },
+      { name: 'Adv. Manish Sharma', role: 'Chairperson, Vidhishala', image: '/advocate manish sharma.jpeg' },
+      { name: 'Adv. Ashwani Chobisa', role: 'Founding & Executive Member, Vidhishala', image: '/advocate ashwini chobisa.jpeg' },
     ],
   },
 ];
 
 export default function TeamPage() {
+  return <TeamPageContent />;
+}
+
+async function TeamPageContent() {
+  const managedMembers = await getAdminRows<{
+    id: string;
+    name: string;
+    role: string;
+    category: string;
+    expertise?: string | null;
+    photo_url?: string | null;
+    display_order?: number;
+  }>('team_members');
+  const activeCategories = managedMembers.length > 0
+    ? [{ id: 'managed', label: 'Leadership Team', icon: Users, description: 'The people guiding Vidhishala\'s mission and growth.', members: managedMembers.sort((a, b) => (a.display_order || 0) - (b.display_order || 0)).map((member) => ({ name: member.name, role: member.role, expertise: member.expertise || undefined, image: member.photo_url || undefined })) }]
+    : categories;
+
   return (
     <div className="overflow-hidden">
       {/* Hero */}
@@ -78,7 +73,7 @@ export default function TeamPage() {
               Team & <span className="text-gradient-gold">Leadership</span>
             </h1>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl">
-              The minds behind Vidhishala Foundation — a diverse team of
+              The minds behind Vidhishala — a diverse team of
               jurists, academicians, advocates, and students united by a shared
               commitment to legal excellence.
             </p>
@@ -87,7 +82,7 @@ export default function TeamPage() {
       </section>
 
       {/* Team Categories */}
-      {categories.map((cat) => (
+      {activeCategories.map((cat) => (
         <section key={cat.id} className="py-12">
           <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-4 mb-8">
@@ -105,13 +100,27 @@ export default function TeamPage() {
                   <CardContent className="p-6 text-center">
                     <div className="relative mx-auto mb-4">
                       <div className="absolute inset-0 bg-gradient-to-br from-gold/20 to-indigo/20 rounded-full blur-md group-hover:opacity-100 opacity-0 transition-opacity" />
-                      <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-navy to-navy-light text-primary font-heading text-2xl font-bold border-2 border-gold/30">
-                        {member.name.split(' ').map(n => n[0]).slice(0, 2).join('')}
+                      <div className="relative mx-auto h-24 w-24 shrink-0 overflow-hidden rounded-full border-2 border-gold/30 bg-gradient-to-br from-navy to-navy-light text-primary font-heading text-2xl font-bold shadow-md">
+                        {member.image ? (
+                          <Image
+                            src={member.image}
+                            alt={member.name}
+                            fill
+                            sizes="96px"
+                            className="h-full w-full rounded-full object-cover"
+                          />
+                        ) : (
+                          <span className="flex h-full w-full items-center justify-center">
+                            {member.name.split(' ').map(n => n[0]).slice(0, 2).join('')}
+                          </span>
+                        )}
                       </div>
                     </div>
                     <h3 className="font-heading font-semibold text-sm mb-1">{member.name}</h3>
                     <p className="text-xs text-primary mb-2">{member.role}</p>
-                    <Badge variant="secondary" className="text-xs">{member.expertise}</Badge>
+                    {member.expertise && (
+                      <Badge variant="secondary" className="text-xs">{member.expertise}</Badge>
+                    )}
                     <div className="flex items-center justify-center gap-2 mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
                       <button className="flex h-7 w-7 items-center justify-center rounded-full bg-muted hover:bg-primary hover:text-white transition-all">
                         <Mail className="h-3 w-3" />

@@ -254,7 +254,7 @@ export default function ProgramsPage() {
                 Ready to Apply?
               </h2>
               <p className="text-muted-foreground mb-8">
-                Start your journey with Vidhishala Foundation. Applications are
+                Start your journey with Vidhishala. Applications are
                 open for all programs.
               </p>
               <Button asChild size="lg" className="bg-gradient-to-r from-gold to-amber-600 text-navy font-semibold glow-gold">

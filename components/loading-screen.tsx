@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Scale } from 'lucide-react';
 
 export function LoadingScreen() {
   const [isLoading, setIsLoading] = useState(true);
@@ -27,8 +26,8 @@ export function LoadingScreen() {
       <div className="relative flex flex-col items-center">
         <div className="relative mb-6">
           <div className="absolute inset-0 bg-gold/30 rounded-full blur-xl animate-glow-pulse" />
-          <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-gold to-amber-600 text-navy shadow-2xl animate-float">
-            <Scale className="h-10 w-10" strokeWidth={2} />
+          <div className="relative h-24 w-24 overflow-hidden rounded-full bg-white p-1 shadow-2xl ring-1 ring-[#B08D57]/60 animate-float">
+            <img src="/vidhishala%20circle%20logo.png" alt="Vidhishala logo" className="h-full w-full rounded-full object-contain" />
           </div>
         </div>
 
@@ -36,9 +35,7 @@ export function LoadingScreen() {
           <div className="font-heading font-bold text-2xl tracking-wider text-gradient-gold animate-fade-up">
             VIDHISHALA
           </div>
-          <div className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground animate-fade-up" style={{ animationDelay: '0.2s' }}>
-            Foundation
-          </div>
+          <div className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground animate-fade-up" style={{ animationDelay: '0.2s' }} />
         </div>
 
         <div className="mt-8 flex gap-1.5">

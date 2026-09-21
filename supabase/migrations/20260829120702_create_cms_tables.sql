@@ -1,7 +1,7 @@
 /*
-# Vidhishala Foundation CMS Tables
+# Vidhishala CMS Tables
 
-Creates all database tables needed for the Vidhishala Foundation website's
+Creates all database tables needed for the Vidhishala website's
 content management system, including publications, internship applications,
 events, team members, gallery media, and contact inquiries.
 

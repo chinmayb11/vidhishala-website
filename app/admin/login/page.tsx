@@ -57,7 +57,7 @@ export default function AdminLoginPage() {
           </div>
           <h1 className="font-heading text-2xl font-bold mb-1">Admin Portal</h1>
           <p className="text-sm text-muted-foreground">
-            Vidhishala Foundation Content Management System
+            Vidhishala Content Management System
           </p>
         </div>
 

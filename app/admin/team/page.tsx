@@ -22,7 +22,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/lib/supabase-client';
+import { adminApi } from '@/lib/admin-api';
 
 interface TeamMember {
   id: string;
@@ -50,7 +50,7 @@ export default function AdminTeamPage() {
   });
 
   const fetchMembers = async () => {
-    const { data, error } = await supabase.from('team_members').select('*').order('display_order', { ascending: true });
+    const { data, error } = await adminApi.from('team_members').select('*').order('display_order', { ascending: true });
     if (!error && data) setMembers(data as TeamMember[]);
     setLoading(false);
   };
@@ -82,11 +82,11 @@ export default function AdminTeamPage() {
       email: form.email || null, display_order: form.display_order,
     };
     if (editing) {
-      const { error } = await supabase.from('team_members').update(payload).eq('id', editing.id);
+      const { error } = await adminApi.from('team_members').update(payload).eq('id', editing.id);
       if (error) { toast({ title: 'Update Failed', description: error.message, variant: 'destructive' }); return; }
       toast({ title: 'Member Updated' });
     } else {
-      const { error } = await supabase.from('team_members').insert(payload);
+      const { error } = await adminApi.from('team_members').insert(payload);
       if (error) { toast({ title: 'Insert Failed', description: error.message, variant: 'destructive' }); return; }
       toast({ title: 'Member Added' });
     }
@@ -96,7 +96,7 @@ export default function AdminTeamPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Remove this team member?')) return;
-    const { error } = await supabase.from('team_members').delete().eq('id', id);
+    const { error } = await adminApi.from('team_members').delete().eq('id', id);
     if (error) { toast({ title: 'Delete Failed', description: error.message, variant: 'destructive' }); return; }
     toast({ title: 'Member Removed' });
     fetchMembers();

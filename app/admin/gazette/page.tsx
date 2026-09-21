@@ -15,7 +15,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/lib/supabase-client';
+import { adminApi } from '@/lib/admin-api';
 
 interface Publication {
   id: string;
@@ -45,7 +45,7 @@ export default function AdminGazettePage() {
   });
 
   const fetchPublications = async () => {
-    const { data, error } = await supabase
+    const { data, error } = await adminApi
       .from('gazette_publications')
       .select('*')
       .order('release_date', { ascending: false });
@@ -79,7 +79,7 @@ export default function AdminGazettePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editing) {
-      const { error } = await supabase
+      const { error } = await adminApi
         .from('gazette_publications')
         .update({
           title: form.title,
@@ -96,7 +96,7 @@ export default function AdminGazettePage() {
       }
       toast({ title: 'Publication Updated', description: 'Changes saved successfully.' });
     } else {
-      const { error } = await supabase.from('gazette_publications').insert({
+      const { error } = await adminApi.from('gazette_publications').insert({
         title: form.title,
         volume: form.volume,
         issue_number: form.issue_number || null,
@@ -116,7 +116,7 @@ export default function AdminGazettePage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this publication?')) return;
-    const { error } = await supabase.from('gazette_publications').delete().eq('id', id);
+    const { error } = await adminApi.from('gazette_publications').delete().eq('id', id);
     if (error) {
       toast({ title: 'Delete Failed', description: error.message, variant: 'destructive' });
       return;

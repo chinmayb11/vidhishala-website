@@ -20,7 +20,7 @@ import { Button } from '@/components/ui/button';
 import { AnimatedCounter } from '@/components/animated-counter';
 
 const milestones = [
-  { year: '2020', title: 'Foundation Established', desc: 'Vidhishala Foundation registered under The Rajasthan Societies Registration Act, 1958.' },
+  { year: '2020', title: ' Established', desc: 'Vidhishala registered under The Rajasthan Societies Registration Act, 1958.' },
   { year: '2021', title: 'Top 100 Law Blog Recognition', desc: 'Ranked among the Top 100 Indian Law Blogs by Feedspot.' },
   { year: '2022', title: 'First LIP Edition', desc: 'Launched the Library Internship Program with Rajasthan Education Trust.' },
   { year: '2023', title: 'The Vidhi Gazette Launch', desc: 'Published the inaugural volume of our peer-reviewed legal journal.' },
@@ -50,7 +50,7 @@ export default function AboutPage() {
               <span className="text-gradient-gold">Since 2020.</span>
             </h1>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl">
-              The Vidhishala Foundation is a registered socio-legal
+              The Vidhishala is a registered socio-legal
               organization committed to advancing legal education, research,
               and community impact across Rajasthan and India.
             </p>
@@ -72,7 +72,7 @@ export default function AboutPage() {
                     <h2 className="font-heading text-2xl font-bold">Registration Credentials</h2>
                   </div>
                   <p className="text-muted-foreground mb-4">
-                    Vidhishala Foundation is a legally registered socio-legal
+                    Vidhishala is a legally registered socio-legal
                     organization under The Rajasthan Societies Registration
                     Act, 1958. We operate with full statutory compliance and
                     transparency.

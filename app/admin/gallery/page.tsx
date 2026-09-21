@@ -22,7 +22,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/lib/supabase-client';
+import { adminApi } from '@/lib/admin-api';
 
 interface MediaItem {
   id: string;
@@ -45,7 +45,7 @@ export default function AdminGalleryPage() {
   });
 
   const fetchItems = async () => {
-    const { data, error } = await supabase.from('gallery_media').select('*').order('created_at', { ascending: false });
+    const { data, error } = await adminApi.from('gallery_media').select('*').order('created_at', { ascending: false });
     if (!error && data) setItems(data as MediaItem[]);
     setLoading(false);
   };
@@ -75,11 +75,11 @@ export default function AdminGalleryPage() {
       event_date: form.event_date || null,
     };
     if (editing) {
-      const { error } = await supabase.from('gallery_media').update(payload).eq('id', editing.id);
+      const { error } = await adminApi.from('gallery_media').update(payload).eq('id', editing.id);
       if (error) { toast({ title: 'Update Failed', description: error.message, variant: 'destructive' }); return; }
       toast({ title: 'Media Updated' });
     } else {
-      const { error } = await supabase.from('gallery_media').insert(payload);
+      const { error } = await adminApi.from('gallery_media').insert(payload);
       if (error) { toast({ title: 'Insert Failed', description: error.message, variant: 'destructive' }); return; }
       toast({ title: 'Media Added' });
     }
@@ -89,7 +89,7 @@ export default function AdminGalleryPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this media item?')) return;
-    const { error } = await supabase.from('gallery_media').delete().eq('id', id);
+    const { error } = await adminApi.from('gallery_media').delete().eq('id', id);
     if (error) { toast({ title: 'Delete Failed', description: error.message, variant: 'destructive' }); return; }
     toast({ title: 'Media Deleted' });
     fetchItems();

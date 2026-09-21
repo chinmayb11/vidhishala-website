@@ -21,13 +21,22 @@ export function PWAInstallButton() {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
     };
+    const installedHandler = () => {
+      setInstalled(true);
+      setDeferredPrompt(null);
+    };
+
     window.addEventListener('beforeinstallprompt', handler);
+    window.addEventListener('appinstalled', installedHandler);
 
     if (window.matchMedia('(display-mode: standalone)').matches) {
       setInstalled(true);
     }
 
-    return () => window.removeEventListener('beforeinstallprompt', handler);
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handler);
+      window.removeEventListener('appinstalled', installedHandler);
+    };
   }, []);
 
   const handleInstall = async () => {
@@ -39,16 +48,19 @@ export function PWAInstallButton() {
       });
       return;
     }
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') {
-      setInstalled(true);
-      toast({
-        title: 'App Installed',
-        description: 'Vidhishala Foundation app has been added to your device.',
-      });
+    try {
+      await deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        setInstalled(true);
+        toast({
+          title: 'App Installed',
+          description: 'Vidhishala app has been added to your device.',
+        });
+      }
+    } finally {
+      setDeferredPrompt(null);
     }
-    setDeferredPrompt(null);
   };
 
   if (installed) {
@@ -56,10 +68,12 @@ export function PWAInstallButton() {
       <Button
         variant="outline"
         size="sm"
-        className="hidden sm:inline-flex items-center gap-2 border-green-500/30 text-green-500"
+        className="inline-flex items-center gap-2 border-green-500/30 text-green-500"
+        aria-label="Vidhishala app installed"
+        title="Vidhishala app installed"
       >
         <Check className="h-4 w-4" />
-        Installed
+        <span className="hidden sm:inline">Installed</span>
       </Button>
     );
   }
@@ -69,10 +83,12 @@ export function PWAInstallButton() {
       variant="outline"
       size="sm"
       onClick={handleInstall}
-      className="hidden sm:inline-flex items-center gap-2 relative overflow-hidden group"
+      className="inline-flex items-center gap-2 relative overflow-hidden group"
+      aria-label="Install Vidhishala app"
+      title="Install Vidhishala app"
     >
       <Download className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
-      Install App
+      <span className="hidden sm:inline">Install App</span>
     </Button>
   );
 }

@@ -15,7 +15,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/lib/supabase-client';
+import { adminApi } from '@/lib/admin-api';
 
 interface EventItem {
   id: string;
@@ -40,7 +40,7 @@ export default function AdminEventsPage() {
   });
 
   const fetchEvents = async () => {
-    const { data, error } = await supabase.from('events').select('*').order('event_date', { ascending: false });
+    const { data, error } = await adminApi.from('events').select('*').order('event_date', { ascending: false });
     if (!error && data) setEvents(data as EventItem[]);
     setLoading(false);
   };
@@ -76,11 +76,11 @@ export default function AdminEventsPage() {
       is_featured: form.is_featured,
     };
     if (editing) {
-      const { error } = await supabase.from('events').update(payload).eq('id', editing.id);
+      const { error } = await adminApi.from('events').update(payload).eq('id', editing.id);
       if (error) { toast({ title: 'Update Failed', description: error.message, variant: 'destructive' }); return; }
       toast({ title: 'Event Updated' });
     } else {
-      const { error } = await supabase.from('events').insert(payload);
+      const { error } = await adminApi.from('events').insert(payload);
       if (error) { toast({ title: 'Insert Failed', description: error.message, variant: 'destructive' }); return; }
       toast({ title: 'Event Created' });
     }
@@ -90,7 +90,7 @@ export default function AdminEventsPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this event?')) return;
-    const { error } = await supabase.from('events').delete().eq('id', id);
+    const { error } = await adminApi.from('events').delete().eq('id', id);
     if (error) { toast({ title: 'Delete Failed', description: error.message, variant: 'destructive' }); return; }
     toast({ title: 'Event Deleted' });
     fetchEvents();

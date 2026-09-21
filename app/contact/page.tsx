@@ -100,7 +100,7 @@ function ContactContent() {
                     </div>
                     <div>
                       <h2 className="font-heading text-xl font-bold">Registered Office</h2>
-                      <p className="text-sm text-muted-foreground">Vidhishala Foundation</p>
+                      <p className="text-sm text-muted-foreground">Vidhishala</p>
                     </div>
                   </div>
                   <div className="space-y-4">
@@ -151,7 +151,7 @@ function ContactContent() {
                       allowFullScreen
                       loading="lazy"
                       referrerPolicy="no-referrer-when-downgrade"
-                      title="Vidhishala Foundation Office Location"
+                      title="Vidhishala Office Location"
                     />
                   </div>
                 </CardContent>
