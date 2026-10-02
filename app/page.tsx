@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Scale, ArrowRight } from 'lucide-react';
@@ -27,6 +29,10 @@ export default function HomePage() {
           controls={false}
           disablePictureInPicture
           disableRemotePlayback
+          onError={(event) => {
+            const video = event.currentTarget;
+            video.style.display = 'none';
+          }}
           className="absolute inset-0 hidden h-full w-full object-cover object-center md:block"
           aria-label="Vidhishala introduction"
         >
