@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Scale, ArrowRight } from 'lucide-react';
+import { Scale, ArrowRight, CalendarDays, Clock3, FileText, MapPin, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
@@ -11,29 +11,17 @@ export default function HomePage() {
     <div className="overflow-hidden">
       {/* Hero video */}
       <section className="relative flex min-h-[100svh] w-full items-center justify-center overflow-hidden bg-[#1C1C1C]">
-        <Image
-          src="/smallscreen_background.webp"
-          alt=""
-          fill
-          priority
-          sizes="(max-width: 767px) 100vw, 0px"
-          className="object-cover object-center md:hidden"
-        />
         <video
           autoPlay
           muted
           loop
           playsInline
           preload="auto"
-          poster="/vidhishala%20circle%20logo.png"
+          poster="/smallscreen_background.webp"
           controls={false}
           disablePictureInPicture
           disableRemotePlayback
-          onError={(event) => {
-            const video = event.currentTarget;
-            video.style.display = 'none';
-          }}
-          className="absolute inset-0 hidden h-full w-full object-cover object-center md:block"
+          className="absolute inset-0 h-full w-full object-cover object-center"
           aria-label="Vidhishala introduction"
         >
           <source src="/hero-background.mp4" type="video/mp4" />
@@ -84,6 +72,102 @@ export default function HomePage() {
                 </div>
               </Link>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Featured upcoming event */}
+      <section id="latest-events" className="py-12 sm:py-16">
+        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-8 max-w-2xl">
+            <Badge variant="outline" className="mb-4 border-gold/30 text-gold">Upcoming event</Badge>
+            <h2 className="font-heading text-3xl font-bold sm:text-4xl">The latest from Vidhishala</h2>
+            <p className="mt-3 text-muted-foreground">
+              A closer look at the opportunities and events shaping our legal community.
+            </p>
+          </div>
+
+          <div className="overflow-hidden rounded-2xl border border-[#D9D0C7] bg-white shadow-[0_24px_70px_rgba(74,8,8,0.10)] dark:border-[#B08D57]/30 dark:bg-[#1C1C1C]">
+            <div className="grid md:grid-cols-[minmax(260px,0.85fr)_1.15fr]">
+              <div className="relative aspect-[4/5] min-h-[420px] bg-[#E8EFED] p-3 sm:p-5 md:aspect-auto md:min-h-[600px]">
+                <Image
+                  src="/new%20events/WhatsApp%20Image%202026-10-08%20at%2011.43.10%20AM.jpeg"
+                  alt="KSLW Fourth Moot Court Training Workshop, November 2-3, 2026"
+                  fill
+                  sizes="(max-width: 1023px) 100vw, 42vw"
+                  className="object-contain p-3 sm:p-5"
+                />
+              </div>
+
+              <article className="flex flex-col justify-center p-6 sm:p-9 lg:p-12">
+                <div className="mb-5 flex flex-wrap items-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-[#7A0C0C]/[0.07] px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-[#7A0C0C] dark:bg-[#B08D57]/15 dark:text-[#D7B879]">
+                    <Sparkles className="h-3.5 w-3.5" /> Moot court training
+                  </span>
+                  <span className="rounded-full border border-[#B08D57]/50 px-3 py-1.5 text-xs font-semibold text-[#7A0C0C] dark:text-[#D7B879]">
+                    Limited seats
+                  </span>
+                </div>
+
+                <h3 className="font-heading text-3xl font-bold leading-tight text-[#1C1C1C] dark:text-[#F8F5F3] sm:text-4xl">
+                  KSLW Fourth Moot Court Training Workshop
+                </h3>
+                <p className="mt-4 text-base leading-7 text-[#6B6B6B] dark:text-[#D9D0C7]">
+                  Join the Moot Court Club under the aegis of Kanoria School of Law for Women, Jaipur, for an online workshop designed to build practical mooting and advocacy skills.
+                </p>
+
+                <div className="my-7 grid gap-4 border-y border-[#D9D0C7] py-5 dark:border-[#B08D57]/25 sm:grid-cols-2">
+                  <div className="flex items-start gap-3">
+                    <CalendarDays className="mt-0.5 h-5 w-5 shrink-0 text-[#B08D57]" />
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-[#6B6B6B]">Dates</p>
+                      <p className="mt-1 font-semibold text-[#1C1C1C] dark:text-[#F8F5F3]">November 2-3, 2026</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-[#B08D57]" />
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-[#6B6B6B]">Format</p>
+                      <p className="mt-1 font-semibold text-[#1C1C1C] dark:text-[#F8F5F3]">Online</p>
+                    </div>
+                  </div>
+                </div>
+
+                <h4 className="font-heading text-lg font-bold text-[#4A0808] dark:text-[#D7B879]">A practical two-day programme</h4>
+                <ul className="mt-3 space-y-2 text-sm leading-6 text-[#6B6B6B] dark:text-[#D9D0C7]">
+                  <li className="flex gap-2"><Clock3 className="mt-1 h-4 w-4 shrink-0 text-[#B08D57]" />Fundamentals of mooting, argumentation skills, and courtroom etiquette</li>
+                  <li className="flex gap-2"><Clock3 className="mt-1 h-4 w-4 shrink-0 text-[#B08D57]" />Mooting research, memorial drafting, and compendium formulation</li>
+                </ul>
+              </article>
+            </div>
+
+            <div className="border-t border-[#D9D0C7] bg-[#F8F5F3]/70 p-5 dark:border-[#B08D57]/25 dark:bg-[#24201F] sm:p-8">
+              <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#7A0C0C] text-white dark:bg-[#B08D57] dark:text-[#1C1C1C]">
+                    <FileText className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <h4 className="font-heading text-lg font-bold text-[#1C1C1C] dark:text-[#F8F5F3]">Event brochure</h4>
+                    <p className="text-sm text-[#6B6B6B] dark:text-[#D9D0C7]">Read the full workshop details below</p>
+                  </div>
+                </div>
+                <a
+                  href="/new%20events/Workshop%202026.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-[#7A0C0C] underline-offset-4 hover:underline dark:text-[#D7B879]"
+                >
+                  Open in new tab <ArrowRight className="h-4 w-4" />
+                </a>
+              </div>
+              <iframe
+                src="/new%20events/Workshop%202026.pdf#view=FitH"
+                title="KSLW Fourth Moot Court Training Workshop brochure"
+                className="h-[560px] w-full rounded-lg border border-[#D9D0C7] bg-white sm:h-[720px]"
+                loading="lazy"
+              />
+            </div>
           </div>
         </div>
       </section>
